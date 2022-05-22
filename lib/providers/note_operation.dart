@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:todo/models/Note.dart';
+import '../models/note.dart';
 
 class NoteOperation extends ChangeNotifier {
   List<Note> _notes = [];
 
   List<Note> get getNotes {
     return _notes;
+  }
+
+  NoteOperation() {
+    _addNewNote(
+      'Untitled Note',
+      'This is an empty note.',
+    );
   }
 
   void _addNewNote(String title, String description) {
