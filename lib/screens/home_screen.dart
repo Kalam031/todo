@@ -134,19 +134,17 @@ class MySearchDelegate extends SearchDelegate {
       ];
 
   @override
-  Widget buildResults(BuildContext context) => Center(
-        child: Text(
-          query,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      );
+  Widget buildResults(BuildContext context) => Center();
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    var loadedTodos = Provider.of<NoteOperation>(context).getNotes;
+    var loadedTodos =
+        Provider.of<NoteOperation>(context).getNotes.where((searchResult) {
+      final result = searchResult.title!.toLowerCase();
+      final input = query.toLowerCase();
+
+      return result.contains(input);
+    }).toList();
 
     return ListView.builder(
       itemCount: loadedTodos.length,
@@ -158,6 +156,12 @@ class MySearchDelegate extends SearchDelegate {
           onTap: () {
             query = loadedTodo.title!;
             showResults(context);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => AddScreen(
+                      id: loadedTodo.id!,
+                      title: loadedTodo.title!,
+                      description: loadedTodo.description!,
+                    )));
           },
         );
       },
