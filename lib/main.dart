@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/providers/note_operation.dart';
+import 'package:todo/screens/add_screen.dart';
 import './screens/home_screen.dart';
 
 void main() {
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: HomeScreen(),
+        routes: {
+          AddScreen.routeName: (ctx) => AddScreen(),
+        },
       ),
     );
   }

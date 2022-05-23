@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/providers/note_operation.dart';
+import 'package:todo/screens/add_screen.dart';
 import '../models/note.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -16,10 +17,14 @@ class HomeScreen extends StatelessWidget {
           size: 30,
           color: Colors.lightBlue,
         ),
-        onPressed: () {},
+        backgroundColor: Colors.white,
+        onPressed: () {
+          Navigator.of(context).pushNamed(AddScreen.routeName);
+        },
       ),
       appBar: AppBar(
         title: Text('ToDo'),
+        elevation: 0,
         backgroundColor: Colors.transparent,
       ),
       body: Consumer<NoteOperation>(
@@ -27,7 +32,16 @@ class HomeScreen extends StatelessWidget {
           return ListView.builder(
             itemCount: data.getNotes.length,
             itemBuilder: (context, index) {
-              return NoteCard(data.getNotes[index]);
+              return GestureDetector(
+                child: NoteCard(data.getNotes[index]),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => AddScreen(
+                            title: data.getNotes[index].title!,
+                            description: data.getNotes[index].description!,
+                          )));
+                },
+              );
             },
           );
         },

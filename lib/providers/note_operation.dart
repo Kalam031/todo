@@ -10,13 +10,14 @@ class NoteOperation extends ChangeNotifier {
 
   NoteOperation() {
     _addNewNote(
+      '1',
       'Untitled Note',
       'This is an empty note.',
     );
   }
 
-  void _addNewNote(String title, String description) {
-    Note note = Note(title, description);
+  void _addNewNote(String id, String title, String description) {
+    Note note = Note(id, title, description);
     _notes.add(note);
     notifyListeners();
   }
