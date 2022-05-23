@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
-import '../models/note.dart';
+import 'package:todo/db/database_model.dart';
+import 'package:todo/db/database_service.dart';
 
 class NoteOperation extends ChangeNotifier {
-  List<Note> _notes = [];
+  List<ToDoModel> _notes = [];
 
-  List<Note> get getNotes {
+  List<ToDoModel> get getNotes {
     return _notes;
   }
 
-  NoteOperation() {
-    _addNewNote(
-      '1',
-      'Untitled Note',
-      'This is an empty note.',
-    );
+  void addNewNote(String title, String description) {
+    DatabaseService.instance.addToDoData(title, description);
+    getNewNote();
   }
 
-  void _addNewNote(String id, String title, String description) {
-    Note note = Note(id, title, description);
-    _notes.add(note);
+  void getNewNote() async {
+    var todoData = await DatabaseService.instance.getToDoData();
+    _notes = todoData;
+    notifyListeners();
+  }
+
+  void deleteNote(int id) async {
+    var todoData = await DatabaseService.instance.deleteToDoData(id);
+    _notes = todoData;
     notifyListeners();
   }
 }

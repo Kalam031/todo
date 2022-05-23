@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo/db/database_model.dart';
+import 'package:todo/db/database_service.dart';
 import 'package:todo/providers/note_operation.dart';
 import 'package:todo/screens/add_screen.dart';
-import '../models/note.dart';
+import 'package:todo/screens/search_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  static const routeName = '/homescreen';
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
   Widget build(BuildContext context) {
+    Provider.of<NoteOperation>(context).getNewNote();
     return Scaffold(
       backgroundColor: Colors.lightBlue,
       floatingActionButton: FloatingActionButton(
@@ -26,6 +35,14 @@ class HomeScreen extends StatelessWidget {
         title: Text('ToDo'),
         elevation: 0,
         backgroundColor: Colors.transparent,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(SearchScreen.routeName);
+            }, //_saveForm,
+            icon: Icon(Icons.search),
+          ),
+        ],
       ),
       body: Consumer<NoteOperation>(
         builder: (context, data, child) {
@@ -37,6 +54,7 @@ class HomeScreen extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => AddScreen(
+                            id: data.getNotes[index].id!,
                             title: data.getNotes[index].title!,
                             description: data.getNotes[index].description!,
                           )));
@@ -51,7 +69,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 class NoteCard extends StatelessWidget {
-  final Note note;
+  final ToDoModel note;
   NoteCard(this.note);
 
   @override

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/providers/note_operation.dart';
 import 'package:todo/screens/add_screen.dart';
+import 'package:todo/screens/initial_screen.dart';
+import 'package:todo/screens/search_screen.dart';
 import './screens/home_screen.dart';
 
 void main() {
@@ -21,9 +23,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomeScreen(),
+        home: InitialScreen(),
         routes: {
+          HomeScreen.routeName: (ctx) => HomeScreen(),
           AddScreen.routeName: (ctx) => AddScreen(),
+          SearchScreen.routeName: (ctx) => SearchScreen(),
         },
       ),
     );

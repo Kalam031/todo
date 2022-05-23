@@ -27,7 +27,7 @@ class DatabaseService {
       await db.execute('CREATE TABLE ToDo('
           'id INTEGER PRIMARY KEY AUTOINCREMENT ,'
           'title TEXT DEFAULT "",'
-          'description TEXT DEFAULT "",'
+          'description TEXT DEFAULT ""'
           ')');
     });
   }
@@ -38,7 +38,7 @@ class DatabaseService {
   ) async {
     final db = await database;
     final res = await db!.rawQuery(
-        "INSERT INTO ToDo(title, description,) VALUES(?, ?)",
+        "INSERT INTO ToDo(title, description) VALUES(?, ?)",
         [title, description]);
 
     List<ToDoModel> list =
@@ -67,9 +67,9 @@ class DatabaseService {
     return list;
   }
 
-  Future<List<ToDoModel>> deleteToDoData(String title) async {
+  Future<List<ToDoModel>> deleteToDoData(int id) async {
     final db = await database;
-    final res = await db!.rawQuery("DELETE FROM ToDo WHERE title = ?", [title]);
+    final res = await db!.rawQuery("DELETE FROM ToDo WHERE id = ?", [id]);
 
     List<ToDoModel> list =
         res.isNotEmpty ? res.map((c) => ToDoModel.fromJson(c)).toList() : [];

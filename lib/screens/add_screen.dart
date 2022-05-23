@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/db/database_service.dart';
+
+import '../models/Note.dart';
+import '../providers/note_operation.dart';
 
 class AddScreen extends StatefulWidget {
   static const routeName = '/addscreen';
+
+  final int id;
   final String title;
   final String description;
 
-  AddScreen({this.title = "", this.description = ""});
+  AddScreen({this.id = 0, this.title = "", this.description = ""});
 
   @override
   State<AddScreen> createState() => _AddScreenState();
@@ -20,7 +27,6 @@ class _AddScreenState extends State<AddScreen> {
 
   @override
   void initState() {
-    print(widget.title);
     super.initState();
   }
 
@@ -35,6 +41,26 @@ class _AddScreenState extends State<AddScreen> {
         title: Text('ToDo'),
         elevation: 0,
         backgroundColor: Colors.transparent,
+        actions: [
+          IconButton(
+            onPressed: () {
+              _saveTodo();
+            }, //_saveForm,
+            icon: Icon(Icons.check),
+          ),
+          PopupMenuButton(
+            icon: Icon(Icons.more_vert),
+            itemBuilder: (ctx) => [
+              PopupMenuItem(
+                  child: Text('Delete'),
+                  onTap: () {
+                    Provider.of<NoteOperation>(context, listen: false)
+                        .deleteNote(widget.id);
+                    Navigator.of(context).pop();
+                  }),
+            ],
+          ),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(15),
@@ -90,5 +116,15 @@ class _AddScreenState extends State<AddScreen> {
         ),
       ),
     );
+  }
+
+  void _saveTodo() {
+    if (!_titleController.text.isEmpty ||
+        !_descriptionController.text.isEmpty) {
+      Provider.of<NoteOperation>(context, listen: false)
+          .addNewNote(_titleController.text, _descriptionController.text);
+    } else {
+      //snackbar;
+    }
   }
 }
