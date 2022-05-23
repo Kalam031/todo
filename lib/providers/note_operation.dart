@@ -20,6 +20,13 @@ class NoteOperation extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateNote(int id, String title, String description) async {
+    var todoData =
+        await DatabaseService.instance.updateToDoData(id, title, description);
+    _notes = todoData;
+    notifyListeners();
+  }
+
   void deleteNote(int id) async {
     var todoData = await DatabaseService.instance.deleteToDoData(id);
     _notes = todoData;

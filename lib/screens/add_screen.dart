@@ -8,11 +8,11 @@ import '../providers/note_operation.dart';
 class AddScreen extends StatefulWidget {
   static const routeName = '/addscreen';
 
-  final int id;
+  final int? id;
   final String title;
   final String description;
 
-  AddScreen({this.id = 0, this.title = "", this.description = ""});
+  AddScreen({this.id = -1, this.title = "", this.description = ""});
 
   @override
   State<AddScreen> createState() => _AddScreenState();
@@ -55,7 +55,7 @@ class _AddScreenState extends State<AddScreen> {
                   child: Text('Delete'),
                   onTap: () {
                     Provider.of<NoteOperation>(context, listen: false)
-                        .deleteNote(widget.id);
+                        .deleteNote(widget.id!);
                     Navigator.of(context).pop();
                   }),
             ],
@@ -121,8 +121,15 @@ class _AddScreenState extends State<AddScreen> {
   void _saveTodo() {
     if (!_titleController.text.isEmpty ||
         !_descriptionController.text.isEmpty) {
-      Provider.of<NoteOperation>(context, listen: false)
-          .addNewNote(_titleController.text, _descriptionController.text);
+      if (widget.id != -1) {
+        print(widget.id);
+        Provider.of<NoteOperation>(context, listen: false).updateNote(
+            widget.id!, _titleController.text, _descriptionController.text);
+      } else if (widget.id == -1) {
+        print("test");
+        Provider.of<NoteOperation>(context, listen: false)
+            .addNewNote(_titleController.text, _descriptionController.text);
+      }
     } else {
       //snackbar;
     }

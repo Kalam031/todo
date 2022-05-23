@@ -56,7 +56,7 @@ class DatabaseService {
   }
 
   Future<List<ToDoModel>> updateToDoData(
-      String id, String title, String description) async {
+      int id, String title, String description) async {
     final db = await database;
     final res = await db!.rawQuery(
         "Update ToDo SET title=?, description=? Where id=?",
