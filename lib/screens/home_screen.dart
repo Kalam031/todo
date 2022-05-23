@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/db/database_model.dart';
-import 'package:todo/db/database_service.dart';
 import 'package:todo/providers/note_operation.dart';
 import 'package:todo/screens/add_screen.dart';
-import 'package:todo/screens/search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = '/homescreen';
@@ -38,7 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(SearchScreen.routeName);
+              showSearch(
+                context: context,
+                delegate: MySearchDelegate(),
+              );
             }, //_saveForm,
             icon: Icon(Icons.search),
           ),
@@ -91,16 +92,75 @@ class NoteCard extends StatelessWidget {
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
+            overflow: TextOverflow.ellipsis,
+            softWrap: true,
           ),
           SizedBox(
             height: 5,
           ),
-          Text(
-            note.description!,
-            style: TextStyle(fontSize: 17),
+          Expanded(
+            child: Text(
+              note.description!,
+              style: TextStyle(fontSize: 17),
+              overflow: TextOverflow.ellipsis,
+              softWrap: true,
+            ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class MySearchDelegate extends SearchDelegate {
+  @override
+  Widget? buildLeading(BuildContext context) => IconButton(
+        onPressed: () => close(context, null),
+        icon: Icon(Icons.arrow_back),
+      );
+
+  @override
+  List<Widget>? buildActions(BuildContext context) => [
+        IconButton(
+          onPressed: () {
+            if (query.isEmpty) {
+              close(context, null);
+            } else {
+              query = '';
+            }
+          },
+          icon: Icon(Icons.clear),
+        )
+      ];
+
+  @override
+  Widget buildResults(BuildContext context) => Center(
+        child: Text(
+          query,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    var loadedTodos = Provider.of<NoteOperation>(context).getNotes;
+
+    return ListView.builder(
+      itemCount: loadedTodos.length,
+      itemBuilder: (ctx, index) {
+        final loadedTodo = loadedTodos[index];
+
+        return ListTile(
+          title: Text(loadedTodo.title!),
+          onTap: () {
+            query = loadedTodo.title!;
+            showResults(context);
+          },
+        );
+      },
     );
   }
 }

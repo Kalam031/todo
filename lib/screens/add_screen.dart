@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/db/database_service.dart';
-
-import '../models/Note.dart';
 import '../providers/note_operation.dart';
 
 class AddScreen extends StatefulWidget {
