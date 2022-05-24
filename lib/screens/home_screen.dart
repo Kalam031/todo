@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/db/database_model.dart';
@@ -67,22 +69,34 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Consumer<NoteOperation>(
         builder: (context, data, child) {
-          return ListView.builder(
-            itemCount: data.getNotes.length,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                child: NoteCard(data.getNotes[index]),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => AddScreen(
-                            id: data.getNotes[index].id!,
-                            title: data.getNotes[index].title!,
-                            description: data.getNotes[index].description!,
-                          )));
-                },
-              );
-            },
-          );
+          return data.getNotes.isEmpty
+              ? Center(
+                  child: Text(
+                    'No Todo found. Add Todo by clicking plus icon.',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: data.getNotes.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      child: NoteCard(data.getNotes[index]),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AddScreen(
+                                  id: data.getNotes[index].id!,
+                                  title: data.getNotes[index].title!,
+                                  description:
+                                      data.getNotes[index].description!,
+                                )));
+                      },
+                    );
+                  },
+                );
         },
       ),
     );
