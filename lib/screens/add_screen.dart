@@ -72,7 +72,6 @@ class _AddScreenState extends State<AddScreen> {
           children: [
             TextField(
               decoration: InputDecoration(
-                border: InputBorder.none,
                 hintText: 'Enter Title',
                 hintStyle: TextStyle(
                   fontSize: 20,

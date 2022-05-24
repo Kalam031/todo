@@ -24,7 +24,7 @@ class _InitialScreenState extends State<InitialScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('test'),
+        child: Image.asset('assets/images/ToDo.png'),
       ),
     );
   }

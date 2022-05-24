@@ -19,16 +19,36 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.lightBlue,
       floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.add,
-          size: 30,
-          color: Colors.white,
-        ),
-        backgroundColor: Colors.orangeAccent,
-        onPressed: () {
-          Navigator.of(context).pushNamed(AddScreen.routeName);
-        },
-      ),
+          child: Icon(
+            Icons.add,
+            size: 30,
+            color: Colors.white,
+          ),
+          backgroundColor: Colors.orangeAccent,
+          onPressed: () => showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Create New Todo'),
+                    content: Text(''),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('No'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pushNamed(AddScreen.routeName);
+                        },
+                        child: Text('Yes'),
+                      ),
+                    ],
+                  );
+                },
+              )),
       appBar: AppBar(
         title: Text('ToDo'),
         elevation: 0,
