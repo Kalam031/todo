@@ -22,9 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Icon(
           Icons.add,
           size: 30,
-          color: Colors.lightBlue,
+          color: Colors.white,
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.orangeAccent,
         onPressed: () {
           Navigator.of(context).pushNamed(AddScreen.routeName);
         },

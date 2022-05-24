@@ -31,6 +31,7 @@ class _AddScreenState extends State<AddScreen> {
   Widget build(BuildContext context) {
     String titleText;
     String descriptionText;
+    final scaffold = ScaffoldMessenger.of(context);
 
     return Scaffold(
       backgroundColor: Colors.lightBlue,
@@ -41,7 +42,7 @@ class _AddScreenState extends State<AddScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              _saveTodo();
+              _saveTodo(scaffold);
             }, //_saveForm,
             icon: Icon(Icons.check),
           ),
@@ -49,12 +50,18 @@ class _AddScreenState extends State<AddScreen> {
             icon: Icon(Icons.more_vert),
             itemBuilder: (ctx) => [
               PopupMenuItem(
-                  child: Text('Delete'),
-                  onTap: () {
-                    Provider.of<NoteOperation>(context, listen: false)
-                        .deleteNote(widget.id!);
-                    Navigator.of(context).pop();
-                  }),
+                child: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Text(
+                    'Delete',
+                  ),
+                ),
+                onTap: () {
+                  Provider.of<NoteOperation>(context, listen: false)
+                      .deleteNote(widget.id!);
+                  Navigator.of(context).pop();
+                },
+              ),
             ],
           ),
         ],
@@ -115,20 +122,49 @@ class _AddScreenState extends State<AddScreen> {
     );
   }
 
-  void _saveTodo() {
+  void _saveTodo(var scaffold) {
     if (!_titleController.text.isEmpty ||
         !_descriptionController.text.isEmpty) {
       if (widget.id != -1) {
         print(widget.id);
         Provider.of<NoteOperation>(context, listen: false).updateNote(
             widget.id!, _titleController.text, _descriptionController.text);
+        scaffold.showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.white,
+            content: Text(
+              'Todo updated..!',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
       } else if (widget.id == -1) {
         print("test");
         Provider.of<NoteOperation>(context, listen: false)
             .addNewNote(_titleController.text, _descriptionController.text);
+        scaffold.showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.white,
+            content: Text(
+              'New Todo created..!',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
       }
     } else {
-      //snackbar;
+      scaffold.showSnackBar(SnackBar(
+          backgroundColor: Colors.lightBlue,
+          content: Text(
+            'Todo is empty..!',
+            textAlign: TextAlign.center,
+          )));
     }
   }
 }
