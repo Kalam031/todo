@@ -188,12 +188,15 @@ class MySearchDelegate extends SearchDelegate {
           onTap: () {
             query = loadedTodo.title!;
             showResults(context);
-            Navigator.of(context).push(MaterialPageRoute(
+            Navigator.of(context).push(
+              MaterialPageRoute(
                 builder: (context) => AddScreen(
-                      id: loadedTodo.id!,
-                      title: loadedTodo.title!,
-                      description: loadedTodo.description!,
-                    )));
+                  id: loadedTodo.id!,
+                  title: loadedTodo.title!,
+                  description: loadedTodo.description!,
+                ),
+              ),
+            );
           },
         );
       },
